@@ -265,7 +265,7 @@ public Action Command_CenterSpeed(int client, int args) {
 	} 
 	else 
 	{
-		if(!g_bCentreHudSimple)
+		if(!g_bSimpleCenterHud)
 		{
 			g_bCenterSpeedDisplay[client] = true;
 			CreateTimer(0.1, CenterSpeedDisplayTimer, client, TIMER_FLAG_NO_MAPCHANGE|TIMER_REPEAT);
@@ -2075,7 +2075,7 @@ void CenterSpeedDisplay(int client, bool menu = false)
 {
 	g_bCenterSpeedDisplay[client] = !g_bCenterSpeedDisplay[client];
 
-	if (g_bCenterSpeedDisplay[client] && !g_bCentreHudSimple[client])
+	if (g_bCenterSpeedDisplay[client] && !g_bSimpleCenterHud[client])
 	{
 		CreateTimer(0.1, CenterSpeedDisplayTimer, client, TIMER_FLAG_NO_MAPCHANGE|TIMER_REPEAT);
 	}
@@ -2827,7 +2827,7 @@ public void CentreHudOptions(int client, int item)
 	{
 		AddMenuItem(menu, "", "[ON] Centre Hud");
 
-		if(!g_bCentreHudSimple[client])
+		if(!g_bSimpleCenterHud[client])
 		{
 			AddMenuItem(menu, "", "[Normal] Centre Hud\n \n");
 		}
@@ -2871,13 +2871,13 @@ public int CentreHudOptionsHandler(Menu menu, MenuAction action, int param1, int
 		}
 		else if (param2 == 1)
 		{
-			g_bCentreHudSimple[param1] = !g_bCentreHudSimple[param1];
+			g_bSimpleCenterHud[param1] = !g_bSimpleCenterHud[param1];
 			CentreHudOptions(param1, 1);
 		}
 		else if (param2 == 2)
 		{
 			g_bCentreHud[param1] = true;
-			g_bCentreHudSimple[param1] = false;
+			g_bSimpleCenterHud[param1] = false;
 			g_iCentreHudModule[param1][0] = 1;
 			g_iCentreHudModule[param1][1] = 2;
 			g_iCentreHudModule[param1][2] = 3;
@@ -3191,7 +3191,7 @@ public void MiscellaneousOptions(int client)
 		AddMenuItem(menu, "", "[Z] Speed Mode");
 
 	// Centre Speed Display
-	if (g_bCenterSpeedDisplay[client] && !g_bCentreHudSimple[client])
+	if (g_bCenterSpeedDisplay[client] && !g_bSimpleCenterHud[client])
 	{
 		AddMenuItem(menu, "", "[ON] Centre Speed Display");
 	}
@@ -3238,7 +3238,7 @@ public int MiscellaneousOptionsHandler(Menu menu, MenuAction action, int param1,
 			case 8: PrespeedText(param1, true);
 		}
 
-		if(param2 == 5 && g_bCentreHudSimple[param1])
+		if(param2 == 5 && g_bSimpleCenterHud[param1])
 		{
 			CPrintToChat(param1, "%t", "InvalidComboCenterSpeed", g_szChatPrefix);
 		}

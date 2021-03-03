@@ -123,11 +123,28 @@ public Action CKTimer1(Handle timer)
 				}
 				GetcurrentRunTime(client);
 
-				CenterHudAlive(client);
+				if(g_bSimpleCenterHud[client])
+				{
+					SimpleCenterHudAlive(client);
+				}				
+				else
+				{
+					CenterHudAlive(client);
+				}
+				
 				MovementCheck(client);
 			}
 			else
-				CenterHudDead(client);
+			{
+				if(g_bSimpleCenterHud[client])
+				{
+					SimpleCenterHudDead(client);
+				}
+				else
+				{
+					CenterHudDead(client);
+				}
+			}	
 		}
 	}
 	return Plugin_Continue;

@@ -177,7 +177,7 @@ public Action Event_OnPlayerSpawn(Handle event, const char[] name, bool dontBroa
 			StartRecording(client);
 			CreateTimer(1.5, CenterMsgTimer, client, TIMER_FLAG_NO_MAPCHANGE);
 
-			if (g_bCenterSpeedDisplay[client] && !g_bCentreHudSimple[client])
+			if (g_bCenterSpeedDisplay[client] && !g_bSimpleCenterHud[client])
 			{
 				CreateTimer(0.1, CenterSpeedDisplayTimer, client, TIMER_FLAG_NO_MAPCHANGE|TIMER_REPEAT);
 			}

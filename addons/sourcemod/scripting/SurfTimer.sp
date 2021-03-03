@@ -736,7 +736,7 @@ bool g_bCentreHud[MAXPLAYERS + 1];
 int g_iCentreHudModule[MAXPLAYERS + 1][6];
 
 // centre hud simple
-bool g_bCentreHudSimple[MAXPLAYERS + 1];
+bool g_bSimpleCenterHud[MAXPLAYERS + 1];
 
 // side hud new
 bool g_bSpecListOnly[MAXPLAYERS + 1];

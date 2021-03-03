@@ -70,6 +70,10 @@ public void db_setupDatabase()
 		{
 			db_upgradeDatabase(4);
 		}
+		else if (!SQL_FastQuery(g_hDb, "SELECT simplecenterhud FROM ck_playeroptions2 LIMIT 1;"))
+		{
+			db_upgradeDatabase(5);
+		}
 	}
 
 	SQL_UnlockDatabase(g_hDb);
@@ -194,6 +198,10 @@ public void db_upgradeDatabase(int ver)
   else if (ver == 4)
   {
 	  SQL_FastQuery(g_hDb, "ALTER TABLE ck_announcements ADD COLUMN style INT(11) NOT NULL DEFAULT 0;");
+  }
+  else if (ver == 5)
+  {
+	  SQL_FastQuery(g_hDb, "ALTER TABLE ck_playeroptions2 ADD COLUMN simplecenterhud INT(11) NOT NULL DEFAULT 0 AFTER wrcpmessages;");
   }
   
   SQL_UnlockDatabase(g_hDb);
@@ -5568,7 +5576,7 @@ public void db_viewPlayerOptionsCallback(Handle owner, Handle hndl, const char[]
 
 	if (SQL_HasResultSet(hndl) && SQL_FetchRow(hndl))
 	{
-		// "SELECT timer, hide, sounds, chat, viewmodel, autobhop, checkpoints, gradient, speedmode, centrehud, module1c, module2c, module3c, module4c, module5c, module6c, sidehud, module1s, module2s, module3s, module4s, module5s, prestrafe FROM ck_playeroptions2 where steamid = '%s';"
+		// "SELECT timer, hide, sounds, chat, viewmodel, autobhop, checkpoints, gradient, speedmode, centrehud, module1c, module2c, module3c, module4c, module5c, module6c, sidehud, module1s, module2s, module3s, module4s, module5s, prestrafe, simplecenterhud FROM ck_playeroptions2 where steamid = '%s';"
 
 		g_bTimerEnabled[client] = view_as<bool>(SQL_FetchInt(hndl, 0));
 		g_bHide[client] = view_as<bool>(SQL_FetchInt(hndl, 1));
@@ -5597,7 +5605,7 @@ public void db_viewPlayerOptionsCallback(Handle owner, Handle hndl, const char[]
 		g_iPrespeedText[client] = view_as<bool>(SQL_FetchInt(hndl, 24));
 		g_iCpMessages[client] = view_as<bool>(SQL_FetchInt(hndl, 25));
 		g_iWrcpMessages[client] = view_as<bool>(SQL_FetchInt(hndl, 26));
-		
+		g_bSimpleCenterHud[client] = view_as<bool>(SQL_FetchInt(hndl, 27));
 
 		// Functionality for normal spec list
 		if (g_iSideHudModule[client][0] == 5 && (g_iSideHudModule[client][1] == 0 && g_iSideHudModule[client][2] == 0 && g_iSideHudModule[client][3] == 0 && g_iSideHudModule[client][4] == 0))
@@ -5666,7 +5674,7 @@ public void db_updatePlayerOptions(int client)
 	// "UPDATE ck_playeroptions2 SET timer = %i, hide = %i, sounds = %i, chat = %i, viewmodel = %i, autobhop = %i, checkpoints = %i, centrehud = %i, module1c = %i, module2c = %i, module3c = %i, module4c = %i, module5c = %i, module6c = %i, sidehud = %i, module1s = %i, module2s = %i, module3s = %i, module4s = %i, module5s = %i where steamid = '%s'";
 	if (g_bSettingsLoaded[client] && g_bServerDataLoaded && g_bLoadedModules[client])
 	{
-		Format(szQuery, 1024, sql_updatePlayerOptions, BooltoInt(g_bTimerEnabled[client]), BooltoInt(g_bHide[client]), BooltoInt(g_bEnableQuakeSounds[client]), BooltoInt(g_bHideChat[client]), BooltoInt(g_bViewModel[client]), BooltoInt(g_bAutoBhopClient[client]), BooltoInt(g_bCheckpointsEnabled[client]), g_SpeedGradient[client], g_SpeedMode[client], BooltoInt(g_bCenterSpeedDisplay[client]), BooltoInt(g_bCentreHud[client]), g_iTeleSide[client], g_iCentreHudModule[client][0], g_iCentreHudModule[client][1], g_iCentreHudModule[client][2], g_iCentreHudModule[client][3], g_iCentreHudModule[client][4], g_iCentreHudModule[client][5], BooltoInt(g_bSideHud[client]), g_iSideHudModule[client][0], g_iSideHudModule[client][1], g_iSideHudModule[client][2], g_iSideHudModule[client][3], g_iSideHudModule[client][4], BooltoInt(g_iPrespeedText[client]), BooltoInt(g_iCpMessages[client]), BooltoInt(g_iWrcpMessages[client]), g_szSteamID[client]);
+		Format(szQuery, 1024, sql_updatePlayerOptions, BooltoInt(g_bTimerEnabled[client]), BooltoInt(g_bHide[client]), BooltoInt(g_bEnableQuakeSounds[client]), BooltoInt(g_bHideChat[client]), BooltoInt(g_bViewModel[client]), BooltoInt(g_bAutoBhopClient[client]), BooltoInt(g_bCheckpointsEnabled[client]), g_SpeedGradient[client], g_SpeedMode[client], BooltoInt(g_bCenterSpeedDisplay[client]), BooltoInt(g_bCentreHud[client]), g_iTeleSide[client], g_iCentreHudModule[client][0], g_iCentreHudModule[client][1], g_iCentreHudModule[client][2], g_iCentreHudModule[client][3], g_iCentreHudModule[client][4], g_iCentreHudModule[client][5], BooltoInt(g_bSideHud[client]), g_iSideHudModule[client][0], g_iSideHudModule[client][1], g_iSideHudModule[client][2], g_iSideHudModule[client][3], g_iSideHudModule[client][4], BooltoInt(g_iPrespeedText[client]), BooltoInt(g_iCpMessages[client]), BooltoInt(g_iWrcpMessages[client]), BooltoInt(g_bSimpleCenterHud[client]), g_szSteamID[client]);
 		SQL_TQuery(g_hDb, SQL_CheckCallback, szQuery, client, DBPrio_Low);
 	}
 }
