@@ -735,6 +735,9 @@ bool g_bAutoBhopClient[MAXPLAYERS + 1];
 bool g_bCentreHud[MAXPLAYERS + 1];
 int g_iCentreHudModule[MAXPLAYERS + 1][6];
 
+// centre hud simple
+bool g_bCentreHudSimple[MAXPLAYERS + 1];
+
 // side hud new
 bool g_bSpecListOnly[MAXPLAYERS + 1];
 bool g_bSideHud[MAXPLAYERS + 1];
@@ -1530,10 +1533,22 @@ int g_szRainbowGradientRGB[][] =
 
 int g_szRGB[][] = 
 {
-	{255, 30, 30, 0}, // Red
-	{30, 255, 30, 0}, // Green
-	{30, 30, 255, 0}, // Blue
-	{225, 225, 225, 0} // White
+	{255, 30, 30, 0}, 		// Red
+	{30, 255, 30, 0}, 		// Green
+	{30, 30, 255, 0}, 		// Blue
+	{225, 225, 225, 0}, 	// Light grey
+	{0, 255, 238, 0}, 		// Teal
+	{255, 60, 60, 0},		// Light Red
+	{140, 255, 140, 0}, 	// Light Green
+	{80, 80, 255, 0}, 		// Light Blue
+	{238, 204, 136, 0},		// Light Orange
+	{221, 136, 119, 0},		// Red/Orange
+	{255, 51, 34, 0},		// Lighter than Red but darker than Light Red
+	{136, 204, 221, 0},		// Baby Blue
+	{85, 238, 85, 0},		// Lime Green
+	{187, 136, 187, 0},		// Light Purple
+	{218, 119, 221, 0},		// Light Pink
+	{212, 175, 55, 0}		// Gold
 };
 
 char UnallowedTitles[][] =

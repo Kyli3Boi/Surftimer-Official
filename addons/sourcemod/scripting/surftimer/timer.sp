@@ -600,86 +600,25 @@ public Action AnnouncementTimer(Handle timer)
 
 public Action CenterSpeedDisplayTimer(Handle timer, any client)
 {
-	int  pos, speed, color1[4], color2[4] = {255,255,255, 0};
+	int color1[4], color2[4];
 	char szSpeed[128];
-
-	speed = RoundToFloor(g_fLastSpeed[client]);
+	color2 = {255, 255, 255, 0};
 
 	if (IsValidClient(client) && !IsFakeClient(client) && g_bCenterSpeedDisplay[client])
 	{
 		if (IsPlayerAlive(client))
+		{
 			Format(szSpeed, sizeof(szSpeed), "%i", RoundToNearest(g_fLastSpeed[client]));
+		}
 		else if (g_SpecTarget[client] != -1)
+		{
 			Format(szSpeed, sizeof(szSpeed), "%i", RoundToNearest(g_fLastSpeed[g_SpecTarget[client]]));
-		
-		if (g_SpeedGradient[client] == 0) // White
-		{
-			color1 = g_szRGB[3]; 
-		}
-		
-		if (g_SpeedGradient[client] == 3) // Gain/Loss
-		{
-			if(g_iOldSpeed[client] == RoundToNearest(g_fLastSpeed[client]))
-			{
-				color1 = g_szRGB[3];
-			}
-			else if(g_iOldSpeed[client] < RoundToNearest(g_fLastSpeed[client]))
-			{
-				color1 = g_szRGB[1];
-			}
-			else if(g_iOldSpeed[client] > RoundToNearest(g_fLastSpeed[client]))
-			{
-				color1 = g_szRGB[0];
-			}
 		}
 
-		if (g_fMaxVelocity == 10000.0)
-		{
-			if (g_SpeedGradient[client] == 1) // Green Gradient
-			{
-				pos = RoundToFloor(speed / 400.0);
-				if (pos > 24)
-				{
-					pos = 24;
-				}
-				color1 = g_sz10000mvGradientRGB[pos];
-			}
-			else if (g_SpeedGradient[client] == 2) // Rainbow
-			{
-				pos = RoundToFloor(speed / 476.0);
-				if (pos > 21)
-				{
-					pos = 21;
-				}		
-				color1 = g_szRainbowGradientRGB[pos];
-			}
-		}
-		else
-		{
-			if (g_SpeedGradient[client] == 1) // Green Gradient
-			{
-				pos = RoundToFloor(speed / 100.0);
-				if (pos > 34)
-				{
-					pos = 34;
-				}
-				color1 = g_sz3500mvGradientRGB[pos]; 
-			}
-			else if (g_SpeedGradient[client] == 2) // Rainbow
-			{
-				pos = RoundToFloor(speed / 166.0);
-				if (pos > 21)
-				{	
-					pos = 21;
-				}
-				color1 = g_szRainbowGradientRGB[pos];
-			}
-		}
+		GetSpeedRGBColor(client, color1);
 
-		g_iOldSpeed[client] = RoundToNearest(g_fLastSpeed[client]);
-		
+		SetHudTextParamsEx(-1.0, 0.35, 1.0, color1, color2, 0, 0.0, 0.0, 0.0);
 		ShowHudText(client, 2, szSpeed);
-		SetHudTextParamsEx(-1.0, 0.30, 1.0, color1, color2, 0, 0.25, 0.0, 0.0);
 	}
 	else
 		return Plugin_Stop;
