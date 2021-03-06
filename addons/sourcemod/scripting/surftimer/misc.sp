@@ -3624,166 +3624,6 @@ public void CenterHudAlive(int client)
 				PrintCSGOHUDText(client, "<pre><font>%15s\t %15s\n%15s\t %15s\n%15s\t %15s</font></pre>", module[0], module[1], module[2], module[3], module[4], module[5]);
 			}
 		}
-			/*else
-			{
-				int color1[4], color2[4];
-				char szSpeed[128], szStage[64], szCurrentCP[64];
-				color2 = {255, 255, 255, 0};
-				int zGroup = g_iClientInZone[client][2];
-				
-				Format(szSpeed, sizeof(szSpeed), "%i", RoundToNearest(g_fLastSpeed[client]));
-				FormatTimeFloat(client, g_fCurrentRunTime[client], 3, pAika, 128);
-				
-				if (g_bTimerRunning[client])
-				{
-					color1 = g_szRGB[3];
-					SetHudTextParamsEx(-1.0, 0.75, 1.0, color1, color2, 0, 0.0, 0.0, 0.0);
-					ShowHudText(client, 3, pAika);
-
-					if (g_bPause[client])
-					{
-						// Paused
-						color1 = g_szRGB[8];
-						SetHudTextParamsEx(-1.0, 0.75, 1.0, color1, color2, 0, 0.0, 0.0, 0.0);
-						ShowHudText(client, 3, pAika);
-					}
-					else if (g_bPracticeMode[client])
-					{
-						// Prac mode
-						color1 = g_szRGB[3];
-						SetHudTextParamsEx(-1.0, 0.75, 1.0, color1, color2, 0, 0.0, 0.0, 0.0);
-						ShowHudText(client, 3, "[P]%s", pAika);
-
-						if(g_bInBonus[client])
-						{
-							color1 = g_szRGB[15];
-							Format(szStage, 64, g_szZoneGroupName[zGroup]);
-
-							SetHudTextParamsEx(-1.0, 0.78, 1.0, color1, color2, 0, 0.0, 0.0, 0.0);
-							ShowHudText(client, 4, szStage);
-						}
-					}
-					else if (g_bInBonus[client])
-					{
-						color1 = g_szRGB[9];
-						SetHudTextParamsEx(-1.0, 0.75, 1.0, color1, color2, 0, 0.0, 0.0, 0.0);
-						ShowHudText(client, 3, pAika);
-
-						color1 = g_szRGB[15];
-						Format(szStage, 64, g_szZoneGroupName[zGroup]);
-
-						SetHudTextParamsEx(-1.0, 0.78, 1.0, color1, color2, 0, 0.0, 0.0, 0.0);
-						ShowHudText(client, 4, szStage);
-					}
-					else if (g_bMissedMapBest[client] && g_fPersonalRecord[client] > 0.0)
-					{
-						// Missed Personal Best time
-						color1 = g_szRGB[10];
-						SetHudTextParamsEx(-1.0, 0.75, 1.0, color1, color2, 0, 0.0, 0.0, 0.0);
-						ShowHudText(client, 3, pAika);
-					}
-					else if (g_fPersonalRecord[client] < 0.1)
-					{
-						// No Personal Best on map
-						color1 = g_szRGB[11];
-						SetHudTextParamsEx(-1.0, 0.75, 1.0, color1, color2, 0, 0.0, 0.0, 0.0);
-						ShowHudText(client, 3, pAika);
-					}
-					else
-					{
-						// Hasn't missed Personal Best yet
-						color1 = g_szRGB[12];
-						SetHudTextParamsEx(-1.0, 0.75, 1.0, color1, color2, 0, 0.0, 0.0, 0.0);
-						ShowHudText(client, 3, pAika);
-					}
-				}
-				else if (g_bWrcpTimeractivated[client] && !g_bPracticeMode[client])
-				{
-					FormatTimeFloat(client, g_fCurrentWrcpRunTime[client], 3, pAika, 128);
-					color1 = g_szRGB[13];
-					SetHudTextParamsEx(-1.0, 0.75, 1.0, color1, color2, 0, 0.0, 0.0, 0.0);
-					ShowHudText(client, 3, pAika);
-				}
-				else if (!g_bTimerEnabled[client])
-				{
-					color1 = g_szRGB[8];
-					SetHudTextParamsEx(-1.0, 0.75, 1.0, color1, color2, 0, 0.0, 0.0, 0.0);
-					ShowHudText(client, 3, "Disabled");
-
-					if(g_bInBonus[client])
-					{
-						color1 = g_szRGB[15];
-						Format(szStage, 64, g_szZoneGroupName[zGroup]);
-
-						SetHudTextParamsEx(-1.0, 0.78, 1.0, color1, color2, 0, 0.0, 0.0, 0.0);
-						ShowHudText(client, 4, szStage);
-					}
-				}
-				else
-				{
-					color1 = g_szRGB[10];
-					SetHudTextParamsEx(-1.0, 0.75, 1.0, color1, color2, 0, 0.0, 0.0, 0.0);
-					ShowHudText(client, 3, "00:00:00");
-				}
-				
-				if (!g_bhasStages && !g_bInBonus[client]) // map is linear
-				{
-					if (g_iClientInZone[client][0] == 1)
-					{
-						color1 = g_szRGB[6];
-						Format(szCurrentCP, 64, "Start");
-					}
-					else if (g_iCurrentCheckpoint[client] == g_mapZonesTypeCount[g_iClientInZone[client][2]][4])
-					{
-						color1 = g_szRGB[5];
-						Format(szCurrentCP, 64, "End");
-					}
-					else
-					{
-						color1 = g_szRGB[7];
-						Format(szCurrentCP, 64, "CP %i", g_iCurrentCheckpoint[client] + 1);
-					}
-					
-					SetHudTextParamsEx(-1.0, 0.78, 1.0, color1, color2, 0, 0.0, 0.0, 0.0);
-					ShowHudText(client, 4, szCurrentCP);
-				}
-				else if(g_bhasStages && !g_bInBonus[client]) // map has stages
-				{
-					if (g_iClientInZone[client][0] == 1)
-					{
-						color1 = g_szRGB[6];
-						Format(szStage, 64, "Start");
-					}
-					else
-					{
-						color1 = g_szRGB[7];
-						Format(szStage, 64, "S %i/%i", g_Stage[g_iClientInZone[client][2]][client], (g_mapZonesTypeCount[g_iClientInZone[client][2]][3] + 1));
-					}
-					
-					SetHudTextParamsEx(-1.0, 0.78, 1.0, color1, color2, 0, 0.0, 0.0, 0.0);
-					ShowHudText(client, 5, szStage);
-				}	
-				else if(g_iClientInZone[client][2] >= 1 && g_iClientInZone[client][0] == 1) // In Bonus start zone
-				{
-					color1 = g_szRGB[6];
-					Format(szStage, 64, "Start");
-					SetHudTextParamsEx(-1.0, 0.78, 1.0, color1, color2, 0, 0.0, 0.0, 0.0);
-					ShowHudText(client, 4, szStage);
-				}
-				else if(g_iClientInZone[client][2] >= 1 && g_iClientInZone[client][0] == 2) // In Bonus end zone
-				{
-					color1 = g_szRGB[5];
-					Format(szStage, 64, "End");
-					SetHudTextParamsEx(-1.0, 0.78, 1.0, color1, color2, 0, 0.0, 0.0, 0.0);
-					ShowHudText(client, 4, szStage);
-				}
-				
-				
-				GetSpeedRGBColor(client, color1);
-				SetHudTextParamsEx(-1.0, 0.81, 1.0, color1, color2, 0, 0.0, 0.0, 0.0);
-				ShowHudText(client, 6, szSpeed);
-				
-			}*/
 	}
 }
 
@@ -3795,24 +3635,85 @@ public void SimpleCenterHudAlive(int client)
 	if (g_bCentreHud[client])
 	{
 		int color1[4], color2[4];
-		char szSpeed[128], szStage[64], szCurrentCP[64], szTimer[54], pAika[54];
-		color2 = {0, 0, 0, 255};
 		int zGroup = g_iClientInZone[client][2];
 		int style = g_iCurrentStyle[client];
-		
-		FormatTimeFloat(client, g_fCurrentRunTime[client], 3, pAika, 128);
-		Format(szTimer, sizeof(szTimer), "%s", pAika);
-		
-		// Speed display
-		Format(szSpeed, sizeof(szSpeed), "%i", RoundToNearest(g_fLastSpeed[client]));
-		GetSpeedRGBColor(client, color1);
-		SetHudTextParamsEx(-1.0, 0.30, 1.0, color1, color2, 0, 0.0, 0.0, 0.0);
-		ShowHudText(client, 6, szSpeed);
+		char szStage[32], szCurrentCP[32], szTimer[32], szStyle[6], pAika[32];
 
+		color1 = g_szRGB[3];
+		color2 = g_szRGB[3];
+
+		FormatTimeFloat(client, g_fCurrentRunTime[client], 3, pAika, 128);
+		
+		// Show checkpoint / stage / bonus
+		if (!g_bhasStages) // map is linear
+		{
+			if (g_iClientInZone[client][0] == 1)
+			{
+				color1 = g_szRGB[6];
+				Format(szCurrentCP, 64, "Start");
+			}
+			else if (g_iClientInZone[client][0] == 2)
+			{
+				color1 = g_szRGB[5];
+				Format(szCurrentCP, 64, "End");
+			}
+			else if (g_bInBonus[client])
+			{
+				color1 = g_szRGB[15];
+				Format(szCurrentCP, 64, g_szZoneGroupName[zGroup]);
+			}
+			else
+			{
+				color1 = g_szRGB[7];
+				Format(szCurrentCP, 64, "CP %i", g_iCurrentCheckpoint[client] + 1);
+			}
+
+			SetHudTextParamsEx(-1.0, 0.81, 1.0, color1, color2, 0, 0.0, 0.0, 0.0);
+			ShowHudText(client, 4, szCurrentCP);
+		}
+		else if (g_bhasStages) // map has stages
+		{
+			if (g_iClientInZone[client][0] == 1)
+			{
+				color1 = g_szRGB[6];
+				Format(szStage, 64, "Start");
+			}
+			else if (g_iClientInZone[client][0] == 2)
+			{
+				color1 = g_szRGB[5];
+				Format(szStage, 64, "End");
+			}
+			else if (g_bInBonus[client])
+			{
+				color1 = g_szRGB[15];
+				Format(szStage, 64, g_szZoneGroupName[zGroup]);
+			}
+			else
+			{
+				color1 = g_szRGB[7];
+				Format(szStage, 64, "S %i/%i", g_Stage[g_iClientInZone[client][2]][client], (g_mapZonesTypeCount[g_iClientInZone[client][2]][3] + 1));
+			}
+			
+			SetHudTextParamsEx(-1.0, 0.81, 1.0, color1, color2, 0, 0.0, 0.0, 0.0);
+			ShowHudText(client, 5, szStage);
+		}	
+		
+		// Style
+		if (g_iCurrentStyle[client] != 0)
+		{
+			// If client in style amend timer to show style
+			GetSimpleCenterHudStyle(client, szStyle);
+			Format(szTimer, sizeof(szTimer), "%s %s", szStyle, pAika);
+		}
+		else
+		{
+			// If client not in style just show timer
+			Format(szTimer, sizeof(szTimer), "%s", pAika);
+		}
+
+		// Timer
 		if (g_bTimerRunning[client])
 		{
-			color1 = g_szRGB[3];
-			
 			if (g_bPause[client])
 			{
 				// Paused
@@ -3823,25 +3724,12 @@ public void SimpleCenterHudAlive(int client)
 				// Prac mode
 				color1 = g_szRGB[3];
 				Format(szTimer, sizeof(szTimer), "[P] %s", pAika);
-
-				/*if(g_bInBonus[client])
-				{
-					color1 = g_szRGB[15];
-					Format(szStage, 64, g_szZoneGroupName[zGroup]);
-
-					SetHudTextParamsEx(-1.0, 0.78, 1.0, color1, color2, 0, 0.0, 0.0, 0.0);
-					ShowHudText(client, 4, szStage);
-				}*/
 			}
 			else if (g_bInBonus[client])
 			{
+				// In Bonus
 				color1 = g_szRGB[9];
 
-				/*color1 = g_szRGB[15];
-				Format(szStage, 64, g_szZoneGroupName[zGroup]);
-
-				SetHudTextParamsEx(-1.0, 0.78, 1.0, color1, color2, 0, 0.0, 0.0, 0.0);
-				ShowHudText(client, 4, szStage);*/
 			}
 			else if (g_bMissedMapBest[client] && g_fPersonalRecord[client] > 0.0)
 			{
@@ -3859,139 +3747,188 @@ public void SimpleCenterHudAlive(int client)
 				color1 = g_szRGB[12];
 			}
 			
-			SetHudTextParamsEx(-1.0, 0.70, 1.0, color1, color2, 0, 0.0, 0.0, 0.0);
+			SetHudTextParamsEx(-1.0, 0.77, 1.0, color1, color2, 0, 0.0, 0.0, 0.0);
 			ShowHudText(client, 3, "%s", szTimer);
 		}
 		else if (g_bWrcpTimeractivated[client] && !g_bPracticeMode[client])
 		{
-			FormatTimeFloat(client, g_fCurrentWrcpRunTime[client], 3, pAika, 128);
-			Format(szTimer, sizeof(szTimer), "%s", pAika);
-
+			// WRCP timer
 			color1 = g_szRGB[13];
 			
-			SetHudTextParamsEx(-1.0, 0.70, 1.0, color1, color2, 0, 0.0, 0.0, 0.0);
-			ShowHudText(client, 3, "%s", szTimer);
+			SetHudTextParamsEx(-1.0, 0.77, 1.0, color1, color2, 0, 0.0, 0.0, 0.0);
+			FormatTimeFloat(client, g_fCurrentWrcpRunTime[client], 3, pAika, 128);
+			ShowHudText(client, 3, "%s", pAika);
 		}
 		else if (!g_bTimerEnabled[client])
 		{
+			// Timer Disabled
 			color1 = g_szRGB[8];
-			SetHudTextParamsEx(-1.0, 0.70, 1.0, color1, color2, 0, 0.0, 0.0, 0.0);
+			
+			SetHudTextParamsEx(-1.0, 0.77, 1.0, color1, color2, 0, 0.0, 0.0, 0.0);
 			ShowHudText(client, 3, "Disabled");
-
-			/*if(g_bInBonus[client])
-			{
-				color1 = g_szRGB[15];
-				Format(szStage, 64, g_szZoneGroupName[zGroup]);
-
-				SetHudTextParamsEx(-1.0, 0.78, 1.0, color1, color2, 0, 0.0, 0.0, 0.0);
-				ShowHudText(client, 4, szStage);
-			}*/
 		}
 		else
 		{
-			color1 = g_szRGB[10];
-			SetHudTextParamsEx(-1.0, 0.70, 1.0, color1, color2, 0, 0.0, 0.0, 0.0);
-			ShowHudText(client, 3, "00:00:00");
-		}
+			//Timer not started, show Server Record
+			if (g_iClientInZone[client][2] == 0 && style == 0)
+			{
+				color1 = g_szRGB[13];
 
-		if (!g_bhasStages) // map is linear
-		{
-			/*if (g_iClientInZone[client][0] == 1)
-			{
-				color1 = g_szRGB[6];
-				Format(szCurrentCP, 64, "Start");
+				if (g_fRecordMapTime != 9999999.0)
+				{
+					if (g_bPracticeMode[client])
+					{
+						Format(szTimer, sizeof(szTimer), "SR: %s", g_szRecordMapTime);
+					}
+					else
+					{
+						Format(szTimer, sizeof(szTimer), "SR: %s", g_szRecordMapTime);
+					}
+				}
+				else
+				{
+					Format(szTimer, sizeof(szTimer), "SR: N/A");
+				}
 			}
-			else if (g_iCurrentCheckpoint[client] == g_mapZonesTypeCount[g_iClientInZone[client][2]][4])
+			else if (g_iClientInZone[client][2] == 0 && g_iCurrentStyle[client] != 0) // Styles
 			{
-				color1 = g_szRGB[5];
-				Format(szCurrentCP, 64, "End");
+				color1 = g_szRGB[13];
+				
+				if (g_fRecordStyleMapTime[style] != 9999999.0)
+				{
+					if (g_bPracticeMode[client])
+					{
+						Format(szTimer, sizeof(szTimer), "SR: %s", g_szRecordStyleMapTime[style]);
+					}
+					else
+					{	
+						Format(szTimer, sizeof(szTimer), "SR: %s", g_szRecordStyleMapTime[style]);
+					}
+				}
+				else
+				{
+					Format(szTimer, sizeof(szTimer), "SR: N/A");
+				}
 			}
 			else
-			{
-				color1 = g_szRGB[7];
-				Format(szCurrentCP, 64, "CP %i", g_iCurrentCheckpoint[client] + 1);
-			}*/
-			
-			if (g_iClientInZone[client][0] == 1)
-			{
-				color1 = g_szRGB[6];
-				Format(szCurrentCP, 64, "Start");
-			}
-			else if(g_iClientInZone[client][0] == 2)
-			{
-				color1 = g_szRGB[5];
-				Format(szCurrentCP, 64, "End");
-			}
-			else if(g_bInBonus[client])
 			{
 				color1 = g_szRGB[15];
-				Format(szCurrentCP, 64, g_szZoneGroupName[zGroup]);
-			}
-			else
-			{
-				color1 = g_szRGB[7];
-				Format(szCurrentCP, 64, "CP %i", g_iCurrentCheckpoint[client] + 1);
+
+				if (g_iCurrentStyle[client] == 0)
+				{
+					Format(szTimer, sizeof(szTimer), "SR: %s", g_szBonusFastestTime[g_iClientInZone[client][2]]);
+				}
+				else if (g_iCurrentStyle[client] != 0) // Styles
+				{	
+					Format(szTimer, sizeof(szTimer), "SR: %s", g_szStyleBonusFastestTime[style][g_iClientInZone[client][2]]);
+				}
 			}
 
-			SetHudTextParamsEx(-1.0, 0.73, 1.0, color1, color2, 0, 0.0, 0.0, 0.0);
-			ShowHudText(client, 4, szCurrentCP);
+			SetHudTextParamsEx(-1.0, 0.77, 1.0, color1, color2, 0, 0.0, 0.0, 0.0);
+			ShowHudText(client, 3, szTimer);
 		}
-		else if(g_bhasStages) // map has stages
-		{
-			/*if (g_iClientInZone[client][0] == 1)
-			{
-				color1 = g_szRGB[6];
-				Format(szStage, 64, "Start");
-			}
-			else
-			{
-				color1 = g_szRGB[7];
-				Format(szStage, 64, "S %i/%i", g_Stage[g_iClientInZone[client][2]][client], (g_mapZonesTypeCount[g_iClientInZone[client][2]][3] + 1));
-			}*/
-			if (g_iClientInZone[client][0] == 1)
-			{
-				color1 = g_szRGB[6];
-				Format(szStage, 64, "Start");
-			}
-			else if(g_iClientInZone[client][0] == 2)
-			{
-				color1 = g_szRGB[5];
-				Format(szStage, 64, "End");
-			}
-			else if(g_bInBonus[client])
-			{
-				color1 = g_szRGB[15];
-				Format(szStage, 64, g_szZoneGroupName[zGroup]);
-			}
-			else
-			{
-				color1 = g_szRGB[7];
-				Format(szStage, 64, "S %i/%i", g_Stage[g_iClientInZone[client][2]][client], (g_mapZonesTypeCount[g_iClientInZone[client][2]][3] + 1));
-			}
-			
-			SetHudTextParamsEx(-1.0, 0.73, 1.0, color1, color2, 0, 0.0, 0.0, 0.0);
-			ShowHudText(client, 5, szStage);
-		}	
-		/*else if(g_iClientInZone[client][2] >= 1 && g_iClientInZone[client][0] == 1) // In Bonus start zone
-		{
-			color1 = g_szRGB[6];
-			Format(szStage, 64, "Start");
-			SetHudTextParamsEx(-1.0, 0.78, 1.0, color1, color2, 0, 0.0, 0.0, 0.0);
-			ShowHudText(client, 4, szStage);
-		}
-		else if(g_iClientInZone[client][2] >= 1 && g_iClientInZone[client][0] == 2) // In Bonus end zone
-		{
-			color1 = g_szRGB[5];
-			Format(szStage, 64, "End");
-			SetHudTextParamsEx(-1.0, 0.78, 1.0, color1, color2, 0, 0.0, 0.0, 0.0);
-			ShowHudText(client, 4, szStage);
-		}*/
 	}
 }
 
 public void SimpleCenterHudDead(int client)
 {
-	return;
+	char szTick[32];
+	char obsAika[128];
+	float obsTimer;
+	Format(szTick, 32, "%i", g_Server_Tickrate);
+	int ObservedUser;
+	ObservedUser = -1;
+	int SpecMode;
+	ObservedUser = GetEntPropEnt(client, Prop_Send, "m_hObserverTarget");
+	SpecMode = GetEntProp(client, Prop_Send, "m_iObserverMode");
+	
+	if (SpecMode == 4 || SpecMode == 5)
+	{
+		g_SpecTarget[client] = ObservedUser;
+		
+		// Show Keys
+		char sResult[256];
+		int Buttons;
+		if (IsValidClient(ObservedUser))
+		{
+			Buttons = g_LastButton[ObservedUser];
+			if (Buttons & IN_MOVELEFT)
+				Format(sResult, sizeof(sResult), "<font color='#b8b'>A</font>");
+			else
+				Format(sResult, sizeof(sResult), "_");
+			if (Buttons & IN_FORWARD)
+				Format(sResult, sizeof(sResult), "%s <font color='#b8b'>W</font>", sResult);
+			else
+				Format(sResult, sizeof(sResult), "%s _", sResult);
+			if (Buttons & IN_BACK)
+				Format(sResult, sizeof(sResult), "%s <font color='#b8b'>S</font>", sResult);
+			else
+				Format(sResult, sizeof(sResult), "%s _", sResult);
+			if (Buttons & IN_MOVERIGHT)
+				Format(sResult, sizeof(sResult), "%s <font color='#b8b'>D</font>", sResult);
+			else
+				Format(sResult, sizeof(sResult), "%s _", sResult);
+			if (Buttons & IN_DUCK)
+				Format(sResult, sizeof(sResult), "%s - <font color='#b8b'>C</font>", sResult);
+			else
+				Format(sResult, sizeof(sResult), "%s - _", sResult);
+			if (Buttons & IN_JUMP)
+				Format(sResult, sizeof(sResult), "%s <font color='#b8b'>J</font>", sResult);
+			else
+				Format(sResult, sizeof(sResult), "%s _", sResult);
+			if (Buttons & IN_LEFT)
+				Format(sResult, sizeof(sResult), "%s <font color='#b8b'>L</font>", sResult);
+			else
+				Format(sResult, sizeof(sResult), "%s _", sResult);
+			if (Buttons & IN_RIGHT)
+				Format(sResult, sizeof(sResult), "%s <font color='#b8b'>R</font>", sResult);
+			else
+				Format(sResult, sizeof(sResult), "%s _", sResult);
+
+			if (IsFakeClient(ObservedUser))
+			{
+				if (ObservedUser == g_RecordBot)
+					Format(obsAika, sizeof(obsAika), "<font color='#ec8'>%s</font>", g_szReplayTime);
+				else if (ObservedUser == g_BonusBot)
+					Format(obsAika, sizeof(obsAika), "<font color='#ec8'>%s</font>", g_szBonusTime);
+				else if (ObservedUser == g_WrcpBot)
+					Format(obsAika, sizeof(obsAika), "<font color='#ec8'>%s</font>", g_szWrcpReplayTime[g_iCurrentlyPlayingStage]);
+
+				PrintCSGOHUDText(client, "<pre>%s\nSpeed: <font color='#5e5'>%i u/s\n%s</pre>", obsAika, RoundToNearest(g_fLastSpeed[ObservedUser]), sResult);
+				return;
+			}
+			else if (g_bTimerRunning[ObservedUser])
+			{
+				obsTimer = GetGameTime() - g_fStartTime[ObservedUser] - g_fPauseTime[ObservedUser];
+				FormatTimeFloat(client, obsTimer, 3, obsAika, sizeof(obsAika));
+			}
+			else if (g_bWrcpTimeractivated[ObservedUser] && !g_bTimerRunning[ObservedUser])
+			{
+				obsTimer = GetGameTime() - g_fStartWrcpTime[ObservedUser] - g_fPauseTime[ObservedUser];
+				FormatTimeFloat(client, obsTimer, 3, obsAika, sizeof(obsAika));
+			}
+			else if (!g_bTimerEnabled[ObservedUser])
+			{
+				obsAika = "<font color='#f32'>Disabled</font>";
+			}
+			else 
+			{
+				obsAika = "<font color='#f32'>00:00:00</font>";
+			}
+			
+			char timerText[32] = "";
+			if (g_iClientInZone[ObservedUser][2] > 0)
+				Format(timerText, 32, "[%s] ", g_szZoneGroupName[g_iClientInZone[ObservedUser][2]]);
+			if (g_bPracticeMode[ObservedUser])
+				Format(timerText, 32, "[P] ");
+			else if (g_iCurrentStyle[ObservedUser] != 0)
+				Format(timerText, 32, "%s ", g_szStyleHud[ObservedUser]);
+
+			PrintCSGOHUDText(client, "<pre>%s<font color='#5e5'>%s</font>\nSpeed: <font color='#5e5'>%i u/s\n%s</pre>", timerText, obsAika, RoundToNearest(g_fLastSpeed[ObservedUser]), sResult);
+		}
+	}
+	else
+		g_SpecTarget[client] = -1;
 }
 
 public void SideHudAlive(int client)
@@ -5759,5 +5696,19 @@ void GetSpeedRGBColor(int client, int color1[4])
 		}	
 		
 		g_iOldSpeed[client] = RoundToNearest(g_fLastSpeed[client]);
+	}
+}
+
+void GetSimpleCenterHudStyle(int client, char szStyle[6])
+{
+	switch (g_iCurrentStyle[client])
+	{
+		case 1: Format(szStyle, sizeof(szStyle), "SW");
+		case 2: Format(szStyle, sizeof(szStyle), "HSW");
+		case 3: Format(szStyle, sizeof(szStyle), "BW");
+		case 4: Format(szStyle, sizeof(szStyle), "LG");
+		case 5: Format(szStyle, sizeof(szStyle), "SM");
+		case 6: Format(szStyle, sizeof(szStyle), "FF");
+		case 7: Format(szStyle, sizeof(szStyle), "FS");
 	}
 }

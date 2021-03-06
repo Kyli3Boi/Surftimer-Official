@@ -265,16 +265,10 @@ public Action Command_CenterSpeed(int client, int args) {
 	} 
 	else 
 	{
-		if(!g_bSimpleCenterHud)
-		{
-			g_bCenterSpeedDisplay[client] = true;
-			CreateTimer(0.1, CenterSpeedDisplayTimer, client, TIMER_FLAG_NO_MAPCHANGE|TIMER_REPEAT);
-			CPrintToChat(client, "%t", "CenterSpeedOn", g_szChatPrefix);
-		}
-		else
-		{
-			CPrintToChat(client, "%t", "InvalidComboCenterSpeed", g_szChatPrefix);
-		}
+		g_bCenterSpeedDisplay[client] = true;
+		CreateTimer(0.1, CenterSpeedDisplayTimer, client, TIMER_FLAG_NO_MAPCHANGE|TIMER_REPEAT);
+		CPrintToChat(client, "%t", "CenterSpeedOn", g_szChatPrefix);
+	
 	}
 	return Plugin_Handled;
 }
@@ -2075,7 +2069,7 @@ void CenterSpeedDisplay(int client, bool menu = false)
 {
 	g_bCenterSpeedDisplay[client] = !g_bCenterSpeedDisplay[client];
 
-	if (g_bCenterSpeedDisplay[client] && !g_bSimpleCenterHud[client])
+	if (g_bCenterSpeedDisplay[client])
 	{
 		CreateTimer(0.1, CenterSpeedDisplayTimer, client, TIMER_FLAG_NO_MAPCHANGE|TIMER_REPEAT);
 	}
@@ -3191,7 +3185,7 @@ public void MiscellaneousOptions(int client)
 		AddMenuItem(menu, "", "[Z] Speed Mode");
 
 	// Centre Speed Display
-	if (g_bCenterSpeedDisplay[client] && !g_bSimpleCenterHud[client])
+	if (g_bCenterSpeedDisplay[client])
 	{
 		AddMenuItem(menu, "", "[ON] Centre Speed Display");
 	}
@@ -3236,11 +3230,6 @@ public int MiscellaneousOptionsHandler(Menu menu, MenuAction action, int param1,
 			case 6: HideChat(param1, true);
 			case 7: HideViewModel(param1, true);
 			case 8: PrespeedText(param1, true);
-		}
-
-		if(param2 == 5 && g_bSimpleCenterHud[param1])
-		{
-			CPrintToChat(param1, "%t", "InvalidComboCenterSpeed", g_szChatPrefix);
 		}
 	}
 	else if (action == MenuAction_Cancel)

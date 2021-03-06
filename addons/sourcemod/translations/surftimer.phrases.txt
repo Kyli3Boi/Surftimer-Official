@@ -1746,11 +1746,6 @@
 		"#format"	"{1:s}"
 		"en"		"{1} The center speed display is now {red}disabled"
 	}
-	"InvalidComboCenterSpeed"
-	{
-		"#format"	"{1:s}"
-		"en"		"{1} You {red}cant {default}enable center speed with simple hud"
-	}
 	"TriggersEnabled"
 	{
 		"#format"	"{1:s}"
